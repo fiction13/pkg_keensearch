@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  ~ @package   pkg_keensearch
+  ~ @version   __DEPLOY_VERSION__
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
+
+<extension type="component" method="upgrade">
+	<name>COM_KEENSEARCH</name>
+	<creationDate>August 2022</creationDate>
+	<author>Dmitriy Vasyukov</author>
+	<authorEmail>info@fictionlabs.ru</authorEmail>
+	<authorUrl>https://fictionlabs.ru</authorUrl>
+	<copyright>A copyright</copyright>
+	<license>GNU General Public License version 2 or later;</license>
+	<version>0.0.2-dev</version>
+	<description>COM_KEENSEARCH_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Component\KeenSearch</namespace>
+	<scriptfile>script.php</scriptfile>
+
+	<!-- Runs on install -->
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<!-- Runs on uninstall -->
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<!-- Runs on update -->
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<!-- Frond-end files -->
+	<files folder="components/com_keensearch">
+		<folder>language</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
+	</files>
+
+	<!-- Back-end files -->
+	<administration>
+		<!-- Menu entries -->
+		<menu view="keensearch">COM_KEENSEARCH</menu>
+		<files folder="administrator/components/com_keensearch">
+			<filename>access.xml</filename>
+			<filename>keensearch.xml</filename>
+			<filename>config.xml</filename>
+			<folder>language</folder>
+			<folder>services</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
+		</files>
+	</administration>
+</extension>
