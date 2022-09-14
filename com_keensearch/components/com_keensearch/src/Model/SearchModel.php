@@ -9,90 +9,185 @@
  * @link      https://fictionlabs.ru/
  */
 
-namespace Joomla\Component\Keensearchs\Site\Model;
+namespace Joomla\Component\Keensearch\Site\Search;
 
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Plugin\PluginHelper;
 
 /**
  * Keensearch model for the Joomla Keensearchs component.
  *
  * @since  1.0.0
  */
-class KeensearchModel extends BaseDatabaseModel
+class KeensearchModel extends ListModel
 {
 	/**
 	 * @var string item
 	 */
-	protected $_item = null;
+	protected $_items = null;
 
 	/**
-	 * Gets a keensearch
+	 * Constructor
 	 *
-	 * @param   integer  $pk  Id for the keensearch
-	 *
-	 * @return  mixed Object or null
-	 *
-	 * @since   1.0
+	 * @since  1.5
 	 */
-	public function getItem($pk = null)
+	public function __construct()
 	{
-		$app = Factory::getApplication();
-		$pk = $app->input->getInt('id');
+		parent::__construct();
 
-		if ($this->_item === null)
+		// Get configuration
+		$app    = Factory::getApplication();
+		$config = Factory::getConfig();
+
+		// Get the pagination request variables
+		$this->setState('limit', $app->getUserStateFromRequest('com_search.limit', 'limit', $config->get('list_limit'), 'uint'));
+		$this->setState('limitstart', $app->input->get('limitstart', 0, 'uint'));
+
+		// Get parameters.
+		$params = $app->getParams();
+
+		if ($params->get('searchphrase') == 1)
 		{
-			$this->_item = array();
+			$searchphrase = 'any';
+		}
+		elseif ($params->get('searchphrase') == 2)
+		{
+			$searchphrase = 'exact';
+		}
+		else
+		{
+			$searchphrase = 'all';
 		}
 
-		if (!isset($this->_item[$pk]))
-		{
-			try
-			{
-				$db    = $this->getDbo();
-				$query = $db->getQuery(true);
-
-				$query->select('*')
-					->from($db->quoteName('#__keensearchs_details', 'a'))
-					->where('a.id = ' . (int) $pk);
-
-				$db->setQuery($query);
-				$data = $db->loadObject();
-
-				if (empty($data))
-				{
-					throw new \Exception(Text::_('COM_KEENSEARCH_ERROR_KEENSEARCH_NOT_FOUND'), 404);
-				}
-
-				$this->_item[$pk] = $data;
-			}
-			catch (\Exception $e)
-			{
-				$this->setError($e);
-				$this->_item[$pk] = false;
-			}
-		}
-
-		return $this->_item[$pk];
+		// Set the search parameters
+		$keyword  = urldecode($app->input->getString('searchword'));
+		$match    = $app->input->get('searchphrase', $searchphrase, 'word');
+		$ordering = $app->input->get('ordering', $params->get('ordering', 'newest'), 'word');
+		$this->setSearch($keyword, $match, $ordering);
 	}
 
 	/**
-	 * Method to auto-populate the model state.
+	 * Method to set the search parameters
 	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * @param   string  $keyword   string search string
+	 * @param   string  $match     matching option, exact|any|all
+	 * @param   string  $ordering  option, newest|oldest|popular|alpha|category
+	 *
+	 * @access  public
+	 *
+	 * @return  void
+	 */
+	public function setSearch($keyword, $match = 'all', $ordering = 'newest')
+	{
+		if (isset($keyword))
+		{
+			$this->setState('origkeyword', $keyword);
+
+			if ($match !== 'exact')
+			{
+				$keyword = preg_replace('#\xE3\x80\x80#', ' ', $keyword);
+			}
+
+			$this->setState('keyword', $keyword);
+		}
+
+		if (isset($match))
+		{
+			$this->setState('match', $match);
+		}
+
+		if (isset($ordering))
+		{
+			$this->setState('ordering', $ordering);
+		}
+	}
+
+	/**
+	 * Method to get weblink item data for the category
+	 *
+	 * @access  public
+	 * @return  array
+	 */
+	public function getItems()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_items))
+		{
+			$items  = array();
+
+			// Trigger for get data from provider plugins
+            PluginHelper::importPlugin('keensearch');
+
+            $this->app->triggerEvent('onContentSearch', [
+				$items,
+				$this->getState('keyword'),
+				$this->getState('match'),
+				$this->getState('ordering'),
+            ]);
+
+			$this->_total = count($items);
+
+			if ($this->getState('limit') > 0)
+			{
+				$this->_items = array_splice($items, $this->getState('limitstart'), $this->getState('limit'));
+			}
+			else
+			{
+				$this->_items = $items;
+			}
+		}
+
+		return $this->_items;
+	}
+
+	/**
+	 * Method to get the total number of weblink items for the category
+	 *
+	 * @access  public
+	 *
+	 * @return  integer
+	 */
+	public function getTotal()
+	{
+		return $this->_total;
+	}
+
+	/**
+	 * Method to set the search areas
+	 *
+	 * @param   array  $active  areas
+	 * @param   array  $search  areas
 	 *
 	 * @return  void
 	 *
-	 * @since   1.0
+	 * @access  public
 	 */
-	protected function populateState()
+	public function setAreas($active = array(), $search = array())
 	{
-		$app = Factory::getApplication();
+		$this->_areas['active'] = $active;
+		$this->_areas['search'] = $search;
+	}
 
-		$this->setState('keensearch.id', $app->input->getInt('id'));
-		$this->setState('params', $app->getParams());
+	/**
+	 * Method to get a pagination object of the weblink items for the category
+	 *
+	 * @access  public
+	 * @return  integer
+	 */
+	public function getPagination()
+	{
+		// Lets load the content if it doesn't already exist
+		if (empty($this->_pagination))
+		{
+			$this->_pagination = new Pagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
+		}
+
+		return $this->_pagination;
 	}
 }

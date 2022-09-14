@@ -10,14 +10,14 @@
 
 <extension type="component" method="upgrade">
 	<name>COM_KEENSEARCH</name>
-	<creationDate>August 2022</creationDate>
+	<creationDate>September 2022</creationDate>
 	<author>Dmitriy Vasyukov</author>
 	<authorEmail>info@fictionlabs.ru</authorEmail>
 	<authorUrl>https://fictionlabs.ru</authorUrl>
 	<copyright>A copyright</copyright>
 	<license>GNU General Public License version 2 or later;</license>
-	<version>0.0.2-dev</version>
-	<description>COM_KEENSEARCH_XML_DESCRIPTION</description>
+	<version>0.0.1</version>
+	<description>COM_KEENSEARCH_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\KeenSearch</namespace>
 	<scriptfile>script.php</scriptfile>
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   pkg_keensearch
+  ~ @version   __DEPLOY_VERSION__
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
+
+<form>
+    <fieldset name="content" label="PLG_KEENSEARCH_CONTENT_CONTENT">
+        <field name="test" type="text"
+               label="PLG_KEENSEARCH_CONTENT_TEST"
+        >
+        </field>
+    </fieldset>
+</form>

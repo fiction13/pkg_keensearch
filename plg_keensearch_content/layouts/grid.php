@@ -10,11 +10,18 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Router\Route;
-use Joomla\Module\Finder\Site\Helper\FinderHelper;
 
-// Load the smart search component language file.
-$lang = $app->getLanguage();
-$lang->load('com_keensearch', JPATH_SITE);
+extract($displayData);
+
+/**
+ * Layout variables
+ * -----------------
+ *
+ * @var  object $item    Item object.
+ *
+ */
+
+?>

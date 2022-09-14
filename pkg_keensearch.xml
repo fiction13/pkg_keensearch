@@ -9,29 +9,30 @@
   -->
 
 <extension version="3.9" type="package" method="upgrade">
-	<name>PKG_RADICALMART</name>
-	<packagename>radicalmart</packagename>
-	<author>Delo Design</author>
-	<creationDate>July 2022</creationDate>
-	<copyright>Copyright © 2021 Delo Design. All rights reserved.</copyright>
-	<license>https://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>boss@delo-design.ru</authorEmail>
-	<authorUrl>https://delo-design.ru</authorUrl>
-	<version>0.0.2-dev</version>
-	<description>PKG_RADICALMART_DESCRIPTION</description>
+	<name>PKG_KEENSEARCH</name>
+	<packagename>keensearch</packagename>
+	<creationDate>September 2022</creationDate>
+    <author>Dmitriy Vasyukov</author>
+    <copyright>Copyright (C) 2005 - 2022 Open Source Matters. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>info@fictionlabs.ru</authorEmail>
+    <authorUrl>https://fictionlabs.ru</authorUrl>
+	<version>0.0.1</version>
+	<description>PKG_KEENSEARCH_DESCRIPTION</description>
 	<scriptfile>script.php</scriptfile>
 	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.pkg_radicalmart.sys.ini</language>
-		<language tag="ru-RU">ru-RU/ru-RU.pkg_radicalmart.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.pkg_keensearch.sys.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.pkg_keensearch.sys.ini</language>
 	</languages>
 	<files>
-		<folder type="component" id="com_radicalmart">com_radicalmart</folder>
-		<folder type="plugin" group="system" id="radicalmart">plg_system_radicalmart</folder>
-		<folder type="plugin" group="pagecache" id="radicalmart">plg_pagecache_radicalmart</folder>
+		<folder type="component" id="com_keensearch">com_keensearch</folder>
+		<folder type="plugin" group="system" id="plg_system_keensearch">plg_system_keensearch</folder>
+		<folder type="plugin" group="pagecache" id="plg_keensearch_content">plg_keensearch_content</folder>
+		<folder type="module" id="mod_keensearch">mod_keensearch</folder>
 	</files>
 	<updateservers>
 		<server type="extension" priority="1" name="RadicalMart">
-			https://radicalmart.ru/update?element=pkg_radicalmart
+			https://radicalmart.ru/update?element=pkg_keensearch
 		</server>
 	</updateservers>
 </extension>

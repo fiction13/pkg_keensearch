@@ -30,7 +30,7 @@ class pkg_keensearchInstallerScript
 	 *
 	 * @var  string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  0.0.1
 	 */
 	protected $minimumPhp = '7.0';
 
@@ -39,7 +39,7 @@ class pkg_keensearchInstallerScript
 	 *
 	 * @var  string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  0.0.1
 	 */
 	protected $minimumJoomla = '4.1.0';
 
@@ -48,7 +48,7 @@ class pkg_keensearchInstallerScript
 	 *
 	 * @var  string
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  0.0.1
 	 */
 	protected $minimumMariaDb = '10.4.1';
 
@@ -62,7 +62,7 @@ class pkg_keensearchInstallerScript
 	 *
 	 * @return  boolean True on success, False on failure.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  0.0.1
 	 */
 	function preflight($type, $parent)
 	{
@@ -79,7 +79,7 @@ class pkg_keensearchInstallerScript
 	 *
 	 * @return  boolean True on success, False on failure.
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  0.0.1
 	 */
 	protected function checkCompatible()
 	{
@@ -123,7 +123,7 @@ class pkg_keensearchInstallerScript
 	 *
 	 * @throws  Exception
 	 *
-	 * @since  __DEPLOY_VERSION__
+	 * @since  0.0.1
 	 */
 	public function postflight($type, $parent)
 	{

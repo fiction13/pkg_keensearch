@@ -18,7 +18,7 @@ use Joomla\CMS\Log\Log;
  *
  * @since  1.0.0
  */
-class Com_keensearchInstallerScript
+class сom_keensearchInstallerScript
 {
 	/**
 	 * Minimum Joomla version to check
